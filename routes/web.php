@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\BeritaController;
+use App\Http\Controllers\Admin\BarangController; 
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,10 +17,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('public.index');
-});
-
-Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -35,3 +32,12 @@ Route::get('/admin/berita/tambah', [BeritaController::class, 'create'])->middlew
 Route::get('/admin/berita/{id}/edit', [BeritaController::class, 'edit'])->middleware(['auth', 'verified'])->name('berita.edit');
 Route::put('/admin/berita/{id}', [BeritaController::class, 'update'])->middleware(['auth', 'verified'])->name('berita.update');
 require __DIR__.'/auth.php';
+
+
+// Rute Inventaris Barang
+Route::get('/admin/inventaris/barang', [BarangController::class, 'index'])->middleware(['auth', 'verified'])->name('barang.index');
+Route::get('/admin/inventaris/barang/tambah', [BarangController::class, 'create'])->middleware(['auth', 'verified'])->name('barang.create');
+Route::post('/admin/inventaris/barang', [BarangController::class, 'store'])->middleware(['auth', 'verified'])->name('barang.store');
+Route::get('/admin/inventaris/barang/{id}/edit', [BarangController::class, 'edit'])->middleware(['auth', 'verified'])->name('barang.edit');
+Route::put('/admin/inventaris/barang/{id}', [BarangController::class, 'update'])->middleware(['auth', 'verified'])->name('barang.update');
+Route::delete('/admin/inventaris/barang/{id}', [BarangController::class, 'destroy'])->middleware(['auth', 'verified'])->name('barang.destroy');

@@ -65,7 +65,13 @@
                             </x-dropdown-link>
                             <x-dropdown-link href="#">
                                 {{ __('Pengembalian') }}
-</x-dropdown-link>
+                            </x-dropdown-link>
+                            <x-dropdown-link href="#">
+                                {{ __('Riwayat Barang Dipinjam') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="#">
+                                {{ __('Riwayat Pengembalian Barang') }}
+                            </x-dropdown-link>
                         </x-slot>
                     </x-dropdown>
                     <!--organisasi-->
@@ -202,6 +208,12 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link href="#" class="text-gray-300 hover:text-white">
                         {{ __('Pengembalian') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link href="#" class="text-gray-300 hover:text-white">
+                        {{ __('Riwayat Barang Dipinjam') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link href="#" class="text-gray-300 hover:text-white">
+                        {{ __('Riwayat Pengembalian Barang') }}
                     </x-responsive-nav-link>
                 </div>
             </div>

@@ -3,45 +3,61 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Anggota;
+use Illuminate\Support\Facades\Storage; // WAJIB DITAMBAHKAN untuk mengelola file foto
 
 class AnggotaController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        // Saya ubah menjadi $anggota (pakai 's') agar sesuai dengan file view index.blade.php yang kita buat sebelumnya
+        $anggota = Anggota::latest()->get(); 
+        
+        return view('admin.anggota.index', compact('anggota'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        return view('admin.anggota.create');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        // 1. Validasi input dari form
+        $validated = $request->validate([
+            'nia'      => 'nullable|string|max:255|unique:anggota,nia',
+            'nama'     => 'required|string|max:255',
+            'angkatan' => 'required|string|max:255',
+            'jabatan'  => 'required|string|max:255',
+            'no_hp'    => 'nullable|string|max:20',
+            'status'   => 'required|string',
+            'foto'     => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Maksimal 2MB
+        ]);
+
+        // 2. Cek jika ada file foto yang diunggah
+        if ($request->hasFile('foto')) {
+            // Simpan foto ke folder public/storage/foto-anggota
+            $validated['foto'] = $request->file('foto')->store('foto-anggota', 'public');
+        }
+
+        // 3. Simpan ke database
+        Anggota::create($validated);
+
+        // 4. Kembali ke halaman index dengan pesan sukses
+        return redirect()->route('anggota.index')->with('success', 'Data anggota berhasil ditambahkan!');
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -50,35 +66,62 @@ class AnggotaController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        //
+        $anggota = Anggota::findOrFail($id);
+        
+        return view('admin.anggota.edit', compact('anggota'));
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        $anggota = Anggota::findOrFail($id);
+
+        // 1. Validasi input
+        $validated = $request->validate([
+            'nia'      => 'nullable|string|max:255|unique:anggota,nia,' . $anggota->id, // Pengecualian unik untuk diri sendiri
+            'nama'     => 'required|string|max:255',
+            'angkatan' => 'required|string|max:255',
+            'jabatan'  => 'required|string|max:255',
+            'no_hp'    => 'nullable|string|max:20',
+            'status'   => 'required|string',
+            'foto'     => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        // 2. Cek jika ada foto baru yang diunggah
+        if ($request->hasFile('foto')) {
+            // Hapus foto lama jika ada
+            if ($anggota->foto) {
+                Storage::disk('public')->delete($anggota->foto);
+            }
+            // Simpan foto baru
+            $validated['foto'] = $request->file('foto')->store('foto-anggota', 'public');
+        }
+
+        // 3. Update data di database
+        $anggota->update($validated);
+
+        return redirect()->route('anggota.index')->with('success', 'Data anggota berhasil diperbarui!');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $anggota = Anggota::findOrFail($id); // Memperbaiki penulisan anggota dengan huruf kapital 'A'
+
+        // Hapus file foto dari storage sebelum datanya dihapus
+        if ($anggota->foto) {
+            Storage::disk('public')->delete($anggota->foto);
+        }
+
+        $anggota->delete();
+
+        return redirect()->route('anggota.index')->with('success', 'Data anggota berhasil dihapus!');
     }
 }

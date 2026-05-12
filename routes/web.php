@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/berita/tambah', [BeritaController::class, 'create'])->middleware(['auth', 'verified'])->name('berita.create');
     Route::get('/admin/berita/{id}/edit', [BeritaController::class, 'edit'])->middleware(['auth', 'verified'])->name('berita.edit');
     Route::put('/admin/berita/{id}', [BeritaController::class, 'update'])->middleware(['auth', 'verified'])->name('berita.update');
-    require __DIR__ . '/auth.php';
+   
 
 
     // Rute Inventaris Barang
@@ -45,7 +45,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/admin/inventaris/barang/{id}', [BarangController::class, 'update'])->middleware(['auth', 'verified'])->name('barang.update');
     Route::delete('/admin/inventaris/barang/{id}', [BarangController::class, 'destroy'])->middleware(['auth', 'verified'])->name('barang.destroy');
 
-    Route::resource('anggota', AnggotaController::class);
-    Route::resource('proker', ProkerController::class);
-    Route::resource('struktur', StrukturController::class);
+    Route::resource('admin/anggota', AnggotaController::class);
+    Route::resource('admin/proker', ProkerController::class);
+    Route::resource('admin/struktur', StrukturController::class);
 });
+
+ require __DIR__ . '/auth.php';

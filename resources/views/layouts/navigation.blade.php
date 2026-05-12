@@ -94,13 +94,13 @@
                             <x-dropdown-link href="{{ route('berita.index') }}">
                                 {{ __('Berita') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="#">
+                            <x-dropdown-link href="{{ route('anggota.index') }}">
                                 {{ __('Daftar Anggota') }}
                             </x-dropdown-link>
                             <x-dropdown-link href="#">
                                 {{ __('Struktur Kepengurusan') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="#">
+                            <x-dropdown-link href="{{ route('proker.index') }}">
                                 {{ __('Program Kerja') }}
                             </x-dropdown-link>
                         </x-slot>
@@ -234,13 +234,13 @@
                     <x-responsive-nav-link href="{{ route('berita.index') }}" class="text-gray-300 hover:text-white">
                         {{ __('Berita') }}
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link href="#" class="text-gray-300 hover:text-white">
+                    <x-responsive-nav-link href="{{ route('anggota.index') }}" class="text-gray-300 hover:text-white">
                         {{ __('Daftar Anggota') }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link href="#" class="text-gray-300 hover:text-white">
                         {{ __('Struktur Kepengurusan') }}
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link href="#" class="text-gray-300 hover:text-white">
+                    <x-responsive-nav-link href="{{ route('proker.index') }}" class="text-gray-300 hover:text-white">
                         {{ __('Program Kerja') }}
                     </x-responsive-nav-link>
                 </div>

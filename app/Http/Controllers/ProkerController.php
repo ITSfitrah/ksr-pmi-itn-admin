@@ -2,83 +2,68 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Proker;
 use Illuminate\Http\Request;
 
 class ProkerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $prokers = Proker::latest('tanggal_mulai')->get(); // Diurutkan berdasarkan tanggal mulai
+        return view('admin.proker.index', compact('prokers'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('admin.proker.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nama_program'    => 'required|string|max:255',
+            'deskripsi'       => 'nullable|string',
+            'tanggal_mulai'   => 'required|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'status'          => 'required|string',
+        ]);
+
+        Proker::create($validated);
+        return redirect()->route('proker.index')->with('success', 'Program kerja berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $proker = Proker::findOrFail($id);
+        return view('admin.proker.edit', compact('proker'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $proker = Proker::findOrFail($id);
+
+        $validated = $request->validate([
+            'nama_program'    => 'required|string|max:255',
+            'deskripsi'       => 'nullable|string',
+            'tanggal_mulai'   => 'required|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'status'          => 'required|string',
+        ]);
+
+        $proker->update($validated);
+        return redirect()->route('proker.index')->with('success', 'Program kerja berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $proker = Proker::findOrFail($id);
+        $proker->delete();
+
+        return redirect()->route('proker.index')->with('success', 'Program kerja berhasil dihapus!');
     }
 }

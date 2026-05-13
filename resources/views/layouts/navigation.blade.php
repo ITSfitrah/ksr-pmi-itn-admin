@@ -97,7 +97,7 @@
                             <x-dropdown-link href="{{ route('anggota.index') }}">
                                 {{ __('Daftar Anggota') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="#">
+                            <x-dropdown-link href="{{ route('struktur.index') }}">
                                 {{ __('Struktur Kepengurusan') }}
                             </x-dropdown-link>
                             <x-dropdown-link href="{{ route('proker.index') }}">
@@ -237,7 +237,7 @@
                     <x-responsive-nav-link href="{{ route('anggota.index') }}" class="text-gray-300 hover:text-white">
                         {{ __('Daftar Anggota') }}
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link href="#" class="text-gray-300 hover:text-white">
+                    <x-responsive-nav-link href="{{ route('struktur.index') }}" class="text-gray-300 hover:text-white">
                         {{ __('Struktur Kepengurusan') }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link href="{{ route('proker.index') }}" class="text-gray-300 hover:text-white">

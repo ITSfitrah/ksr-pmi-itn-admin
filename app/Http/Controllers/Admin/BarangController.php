@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Barang; // Wajib ditambahkan
 
 class BarangController extends Controller
@@ -23,14 +24,22 @@ class BarangController extends Controller
     // Menyimpan data barang baru
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama_barang' => 'required|string|max:255',
             'jumlah' => 'required|integer|min:1',
             'kondisi' => 'required|string',
             'keterangan' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        Barang::create($request->all());
+        if ($request->hasFile('foto')) {
+            $foto = $request->file('foto');
+            $namaFoto = time() . '_' . $foto->getClientOriginalName();
+            $foto->storeAs('public/barang', $namaFoto);
+            $validated['foto'] = $namaFoto;
+        }
+
+        Barang::create($validated);
 
         return redirect()->route('barang.index')->with('success', 'Data barang berhasil ditambahkan!');
     }
@@ -45,15 +54,29 @@ class BarangController extends Controller
     // Menyimpan perubahan data barang
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $barang = Barang::findOrFail($id);
+
+        $validated = $request->validate([
             'nama_barang' => 'required|string|max:255',
             'jumlah' => 'required|integer|min:1',
             'kondisi' => 'required|string',
             'keterangan' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $barang = Barang::findOrFail($id);
-        $barang->update($request->all());
+        if ($request->hasFile('foto')) {
+            // Hapus foto lama
+            if ($barang->foto) {
+                Storage::delete('public/barang/' . $barang->foto);
+            }
+            // Upload foto baru
+            $foto = $request->file('foto');
+            $namaFoto = time() . '_' . $foto->getClientOriginalName();
+            $foto->storeAs('public/barang', $namaFoto);
+            $validated['foto'] = $namaFoto;
+        }
+
+        $barang->update($validated);
 
         return redirect()->route('barang.index')->with('success', 'Data barang berhasil diperbarui!');
     }
@@ -62,6 +85,12 @@ class BarangController extends Controller
     public function destroy($id)
     {
         $barang = Barang::findOrFail($id);
+
+        // Hapus foto dari server
+        if ($barang->foto) {
+            Storage::delete('public/barang/' . $barang->foto);
+        }
+
         $barang->delete();
 
         return redirect()->route('barang.index')->with('success', 'Data barang berhasil dihapus!');

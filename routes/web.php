@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/berita/tambah', [BeritaController::class, 'create'])->middleware(['auth', 'verified'])->name('berita.create');
     Route::get('/admin/berita/{id}/edit', [BeritaController::class, 'edit'])->middleware(['auth', 'verified'])->name('berita.edit');
     Route::put('/admin/berita/{id}', [BeritaController::class, 'update'])->middleware(['auth', 'verified'])->name('berita.update');
+    Route::delete('/admin/berita/{id}', [BeritaController::class, 'destroy'])->middleware(['auth', 'verified'])->name('berita.destroy');
    
 
 

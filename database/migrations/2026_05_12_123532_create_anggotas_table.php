@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('jabatan');
             $table->string('no_hp')->nullable();
             $table->string('status')->default('Aktif');
+            $table->string('tipe_anggota')->default('Anggota Muda'); // TIPE ANGGOTA DITAMBAHKAN
             $table->string('foto')->nullable();
             $table->timestamps();
         });

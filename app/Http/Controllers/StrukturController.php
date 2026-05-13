@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Anggota;
 use Illuminate\Http\Request;
 
 class StrukturController extends Controller
@@ -13,7 +13,9 @@ class StrukturController extends Controller
      */
     public function index()
     {
-        //
+        $pengurus = Anggota::where('tipe_anggota', 'Anggota Biasa')->latest()->get();
+        
+        return view('admin.struktur.index', compact('pengurus'));
     }
 
     /**

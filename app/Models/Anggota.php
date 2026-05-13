@@ -16,6 +16,7 @@ class Anggota extends Model
         'jabatan',
         'no_hp',
         'status',
+        'tipe_anggota', // DITAMBAHKAN
         'foto',
     ];
 }

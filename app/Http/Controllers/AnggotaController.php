@@ -32,27 +32,25 @@ class AnggotaController extends Controller
      */
     public function store(Request $request)
     {
-        // 1. Validasi input dari form
+        // KITA CEK APAKAH DATANYA LOLOS VALIDASI ATAU TIDAK
         $validated = $request->validate([
-            'nia'      => 'nullable|string|max:255|unique:anggota,nia',
-            'nama'     => 'required|string|max:255',
-            'angkatan' => 'required|string|max:255',
-            'jabatan'  => 'required|string|max:255',
-            'no_hp'    => 'nullable|string|max:20',
-            'status'   => 'required|string',
-            'foto'     => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Maksimal 2MB
+            'nia'          => 'nullable|string|max:255|unique:anggota,nia',
+            'nama'         => 'required|string|max:255',
+            'angkatan'     => 'required|string|max:255',
+            'jabatan'      => 'required|string|max:255',
+            'no_hp'        => 'nullable|string|max:20',
+            'status'       => 'required|string',
+            'tipe_anggota' => 'required|string',
+            'foto'         => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+        // ------------------------------------
 
-        // 2. Cek jika ada file foto yang diunggah
         if ($request->hasFile('foto')) {
-            // Simpan foto ke folder public/storage/foto-anggota
             $validated['foto'] = $request->file('foto')->store('foto-anggota', 'public');
         }
 
-        // 3. Simpan ke database
         Anggota::create($validated);
 
-        // 4. Kembali ke halaman index dengan pesan sukses
         return redirect()->route('anggota.index')->with('success', 'Data anggota berhasil ditambahkan!');
     }
 
@@ -89,6 +87,7 @@ class AnggotaController extends Controller
             'jabatan'  => 'required|string|max:255',
             'no_hp'    => 'nullable|string|max:20',
             'status'   => 'required|string',
+            'tipe_anggota' => 'required|string',
             'foto'     => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 

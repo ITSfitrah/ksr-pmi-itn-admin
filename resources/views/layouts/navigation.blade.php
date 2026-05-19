@@ -35,9 +35,6 @@
                             <x-dropdown-link href="{{ route('barang.index') }}">
                                 {{ __('Data Barang') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="#">
-                                {{ __('Data Obat') }}
-                            </x-dropdown-link>
                         </x-slot>
                         <!--peminjaman-->
                     </x-dropdown>
@@ -181,9 +178,6 @@
                 <div x-show="openInventaris" style="display: none;" class="pl-6 bg-red-800/50">
                     <x-responsive-nav-link href="{{ route('barang.index') }}" class="text-gray-300 hover:text-white">
                         {{ __('Data Barang') }}
-                    </x-responsive-nav-link>
-                    <x-responsive-nav-link href="#" class="text-gray-300 hover:text-white">
-                        {{ __('Data Obat') }}
                     </x-responsive-nav-link>
                 </div>
             </div>

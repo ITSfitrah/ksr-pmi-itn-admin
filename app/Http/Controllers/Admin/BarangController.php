@@ -28,6 +28,7 @@ class BarangController extends Controller
             'nama_barang' => 'required|string|max:255',
             'jumlah' => 'required|integer|min:1',
             'kondisi' => 'required|string',
+            'harga_sewa' => 'nullable|integer|min:0',
             'keterangan' => 'nullable|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);

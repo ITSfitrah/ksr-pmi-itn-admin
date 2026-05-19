@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nama_barang');
             $table->integer('jumlah');
             $table->string('kondisi')->default('Baik'); // Contoh: Baik, Rusak Ringan, Rusak Berat
+            $table->integer('harga_sewa')->nullable()->default(0);
             $table->text('keterangan')->nullable(); // nullable = boleh dikosongkan
             $table->string('foto')->nullable();
             $table->timestamps();

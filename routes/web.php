@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\BarangController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\ProkerController;
 use App\Http\Controllers\StrukturController;
+use App\Http\Controllers\PermohonanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +19,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/publik', function () {
+    return view('public.index');
+});
 
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
@@ -49,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('admin/anggota', AnggotaController::class);
     Route::resource('admin/proker', ProkerController::class);
     Route::resource('admin/struktur', StrukturController::class);
+    Route::resource('permohonan', PermohonanController::class);
 });
 
  require __DIR__ . '/auth.php';

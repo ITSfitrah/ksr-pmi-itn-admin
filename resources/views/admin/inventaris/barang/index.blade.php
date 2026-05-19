@@ -18,7 +18,7 @@
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 overflow-x-auto">
-                    
+
                     @if(session('success'))
                         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
                             {{ session('success') }}
@@ -35,6 +35,7 @@
                                 <th class="p-3 font-semibold text-gray-700 text-center">Jumlah</th>
                                 <th class="p-3 font-semibold text-gray-700">Kondisi</th>
                                 <th class="p-3 font-semibold text-gray-700">Keterangan</th>
+                                <th class="p-3 font-semibold text-gray-700 text-center">Harga Sewa (Rp)</th>
                                 <th class="p-3 font-semibold text-gray-700 text-center">Aksi</th>
                             </tr>
                         </thead>
@@ -42,11 +43,12 @@
                             @forelse ($barang as $item)
                                 <tr class="border-b border-gray-100 hover:bg-gray-50">
                                     <td class="p-3 text-center">{{ $loop->iteration }}</td>
-                                    
+
                                     <!-- TAMBAHAN: Data Kolom Foto -->
                                     <td class="p-3">
                                         @if($item->foto)
-                                            <img src="{{ asset('storage/barang/' . $item->foto) }}" alt="Foto Barang" class="w-16 h-16 object-cover rounded shadow-sm border border-gray-200">
+                                            <img src="{{ asset('storage/barang/' . $item->foto) }}" alt="Foto Barang"
+                                                class="w-16 h-16 object-cover rounded shadow-sm border border-gray-200">
                                         @else
                                             <span class="text-sm text-gray-400 italic">Tanpa foto</span>
                                         @endif
@@ -56,21 +58,30 @@
                                     <td class="p-3 text-center">{{ $item->jumlah }}</td>
                                     <td class="p-3">{{ $item->kondisi }}</td>
                                     <td class="p-3">{{ $item->keterangan ?? '-' }}</td>
-                                    
+                                    <td class="p-3 text-right">
+                                        @if($item->harga_sewa > 0)
+                                            Rp {{ number_format($item->harga_sewa, 2, ',', '.') }}
+                                        @else
+                                            <span class="text-gray-400 italic text-sm">Gratis</span>
+                                        @endif
+                                    </td>
                                     <td class="p-3 text-center flex justify-center space-x-2">
-                                        <a href="{{ route('barang.edit', $item->id) }}" class="text-blue-600 hover:text-blue-900 bg-blue-50 px-3 py-1 rounded border border-blue-200">Edit</a>
-                                        
-                                        <form action="{{ route('barang.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus barang ini?');">
+                                        <a href="{{ route('barang.edit', $item->id) }}"
+                                            class="text-blue-600 hover:text-blue-900 bg-blue-50 px-3 py-1 rounded border border-blue-200">Edit</a>
+
+                                        <form action="{{ route('barang.destroy', $item->id) }}" method="POST"
+                                            onsubmit="return confirm('Yakin ingin menghapus barang ini?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1 rounded border border-red-200">Hapus</button>
+                                            <button type="submit"
+                                                class="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1 rounded border border-red-200">Hapus</button>
                                         </form>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
                                     <!-- Colspan diubah dari 6 menjadi 7 karena ketambahan kolom Foto -->
-                                    <td class="p-3 text-center text-gray-500" colspan="7">Data barang belum tersedia.</td>
+                                    <td class="p-3 text-center text-gray-500" colspan="8">Data barang belum tersedia.</td>
                                 </tr>
                             @endforelse
                         </tbody>
